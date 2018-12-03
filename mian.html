@@ -1,0 +1,76 @@
+<html>
+	<head>
+	<meta charset="utf-8">
+	
+	<title> partiu ordenar </title>
+	<link href="assets/CSS/style.css" rel="stylesheet" />
+	</head>
+
+	<body>
+
+        <div class="box">
+            <label >Name: <em class="valor">(Required)</em></label>
+            <input id="valor" type="number" />
+        </br>
+            <button onclick="tamDef()" id="tamUser">Definir tamanho</button>
+        </br>
+            <button onclick="imprimeVetor()"id="vetorDes">imprime vetor</button>
+        </br>
+            <button onclick="bolha()"id="vetorDes">ORDENA VETOR METODO BOLHA</button>
+        </br>
+            <button onclick="padrao()" id="vetorDes">ORDENA VETOR METODO NORMAL</button>
+            <p id="demo"></p>
+        </div>
+
+    	<script>
+			 var tam = 0;
+             var vetor=[];
+              var workerPadrao = new Worker('padrao.js');
+              var workerBolha = new Worker('bolha.js');
+
+             function tamDef(){
+                tam = document.getElementById('valor').value;
+                for(var i = 0; i<tam; i++){
+                    vetor.push(Math.floor(Math.random() * 10)); 
+                }
+            }
+
+
+
+            function imprimeVetor(){
+                for(var i = 0; i<tam; i++){
+                alert(vetor[i]);
+                }
+            }
+
+            function padrao(){
+               workerPadrao.postMessage(vetor);
+                workerPadrao.addEventListener('message', function(e) {
+                console.log('conclued');
+            });
+                
+            }
+
+             function bolha(){
+                workerBolha.postMessage(vetor);
+                
+                workerBolha.addEventListener('message', function(e) {
+                    console.log('conclued');
+                });
+                
+            } 
+
+            
+
+            workerPadrao.addEventListener('error', function(e){
+                debugger
+            });
+            workerBolha.addEventListener('error', function(e){
+                debugger
+            });
+            
+            
+        </script>
+
+	</body>
+</html>
